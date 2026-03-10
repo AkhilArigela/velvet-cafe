@@ -59,3 +59,458 @@
 
 </body>
 </html>
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Menu</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<nav>
+<h2 class="logo">Velvet Cafe</h2>
+
+<input type="text" id="search" placeholder="Search food..." onkeyup="searchFood()">
+
+<a href="cart.html">Cart 🛒</a>
+</nav>
+
+<div class="filters">
+
+<button onclick="filter('all')">All</button>
+<button onclick="filter('starters')">Starters</button>
+<button onclick="filter('main')">Main Course</button>
+<button onclick="filter('fast')">Fast Food</button>
+<button onclick="filter('dessert')">Desserts</button>
+<button onclick="filter('drink')">Drinks</button>
+
+</div>
+
+<div class="menu-container" id="menu"></div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Your Cart</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h2>Your Cart</h2>
+
+<div id="cartItems"></div>
+
+<h3>Total: ₹<span id="total"></span></h3>
+
+<a href="checkout.html">
+<button class="checkout">Proceed to Checkout</button>
+</a>
+
+<script src="script.js"></script>
+
+</body>
+</html>
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Checkout</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h2>Delivery Details</h2>
+
+<form onsubmit="placeOrder(event)">
+
+<input type="text" placeholder="Full Name" required>
+
+<input type="text" placeholder="Address" required>
+
+<input type="tel" placeholder="Phone Number" required>
+
+<button type="submit">Confirm Order</button>
+
+</form>
+
+<script src="script.js"></script>
+
+</body>
+</html>
+
+
+
+
+body{
+font-family:'Poppins',sans-serif;
+margin:0;
+background:#f8f3ed;
+color:#333;
+}
+
+/* NAVBAR */
+
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 40px;
+background:#fff;
+position:sticky;
+top:0;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+.logo{
+color:#c89f94;
+}
+
+/* HERO */
+
+.hero{
+height:90vh;
+background:url("https://images.unsplash.com/photo-1504674900247-0877df9cc836") center/cover;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+color:white;
+}
+
+.hero h1{
+font-size:50px;
+}
+
+.btn{
+background:#c89f94;
+padding:12px 30px;
+color:white;
+border-radius:30px;
+text-decoration:none;
+}
+
+/* LOGIN */
+
+.login-container{
+width:350px;
+margin:100px auto;
+background:white;
+padding:40px;
+border-radius:15px;
+text-align:center;
+box-shadow:0 10px 20px rgba(0,0,0,0.1);
+}
+
+input{
+width:90%;
+padding:10px;
+margin:10px 0;
+border-radius:8px;
+border:1px solid #ddd;
+}
+
+button{
+background:#c89f94;
+border:none;
+padding:10px 20px;
+color:white;
+border-radius:20px;
+cursor:pointer;
+}
+
+button:hover{
+opacity:.8;
+}
+
+/* MENU */
+
+.menu-container{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+padding:40px;
+}
+
+.card{
+background:white;
+border-radius:15px;
+overflow:hidden;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+transition:0.3s;
+}
+
+.card:hover{
+transform:translateY(-5px);
+}
+
+.card img{
+width:100%;
+height:180px;
+object-fit:cover;
+}
+
+.card-body{
+padding:15px;
+}
+
+/* FILTERS */
+
+.filters{
+text-align:center;
+margin:20px;
+}
+
+.filters button{
+margin:5px;
+}
+
+/* CART */
+
+#cartItems{
+padding:20px;
+}
+
+.checkout{
+margin:20px;
+}
+
+
+
+
+
+let foods = [
+
+{
+name:"Spring Rolls",
+category:"starters",
+price:120,
+img:"https://images.unsplash.com/photo-1604908176997-125f25cc6f3d"
+},
+
+{
+name:"Paneer Butter Masala",
+category:"main",
+price:220,
+img:"https://images.unsplash.com/photo-1603894584373-5ac82b2ae398"
+},
+
+{
+name:"Burger",
+category:"fast",
+price:150,
+img:"https://images.unsplash.com/photo-1550547660-d9450f859349"
+},
+
+{
+name:"Chocolate Cake",
+category:"dessert",
+price:180,
+img:"https://images.unsplash.com/photo-1605478038877-6c7c29e5e6d4"
+},
+
+{
+name:"Cold Coffee",
+category:"drink",
+price:120,
+img:"https://images.unsplash.com/photo-1509042239860-f550ce710b93"
+}
+
+];
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+
+/* MENU RENDER */
+
+function loadMenu(){
+
+let menu=document.getElementById("menu");
+
+if(!menu) return;
+
+menu.innerHTML="";
+
+foods.forEach((food,i)=>{
+
+menu.innerHTML+=`
+
+<div class="card" data-category="${food.category}">
+
+<img src="${food.img}">
+
+<div class="card-body">
+
+<h3>${food.name}</h3>
+
+<p>Delicious ${food.name}</p>
+
+<h4>₹${food.price}</h4>
+
+<button onclick="addToCart(${i})">Add to Cart</button>
+
+</div>
+
+</div>
+
+`
+
+})
+
+}
+
+loadMenu();
+
+
+/* ADD TO CART */
+
+function addToCart(i){
+
+cart.push(foods[i])
+
+localStorage.setItem("cart",JSON.stringify(cart))
+
+alert("Added to cart")
+
+}
+
+
+/* CART PAGE */
+
+function loadCart(){
+
+let cartDiv=document.getElementById("cartItems")
+
+if(!cartDiv) return
+
+let total=0
+
+cartDiv.innerHTML=""
+
+cart.forEach((item,index)=>{
+
+total+=item.price
+
+cartDiv.innerHTML+=`
+
+<div>
+
+${item.name} - ₹${item.price}
+
+<button onclick="removeItem(${index})">Remove</button>
+
+</div>
+
+`
+
+})
+
+document.getElementById("total").innerText=total
+
+}
+
+loadCart()
+
+
+function removeItem(i){
+
+cart.splice(i,1)
+
+localStorage.setItem("cart",JSON.stringify(cart))
+
+location.reload()
+
+}
+
+
+/* SEARCH */
+
+function searchFood(){
+
+let input=document.getElementById("search").value.toLowerCase()
+
+let cards=document.querySelectorAll(".card")
+
+cards.forEach(card=>{
+
+let name=card.querySelector("h3").innerText.toLowerCase()
+
+card.style.display=name.includes(input) ? "block":"none"
+
+})
+
+}
+
+
+/* FILTER */
+
+function filter(category){
+
+let cards=document.querySelectorAll(".card")
+
+cards.forEach(card=>{
+
+if(category=="all") card.style.display="block"
+
+else{
+
+card.style.display = card.dataset.category==category ? "block":"none"
+
+}
+
+})
+
+}
+
+
+/* LOGIN DEMO */
+
+function login(){
+
+enterSite()
+
+}
+
+function signup(){
+
+alert("Signup demo successful")
+
+enterSite()
+
+}
+
+function enterSite(){
+
+document.getElementById("loginPage").style.display="none"
+document.getElementById("homePage").style.display="block"
+
+}
+
+
+/* ORDER */
+
+function placeOrder(e){
+
+e.preventDefault()
+
+alert("Order placed successfully!")
+
+localStorage.removeItem("cart")
+
+window.location.href="index.html"
+
+}
