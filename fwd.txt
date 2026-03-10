@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Velvet Cafe</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div class="login-container" id="loginPage">
+
+<h2>Welcome to Velvet Cafe</h2>
+
+<input type="email" placeholder="Email">
+<input type="password" placeholder="Password">
+
+<button onclick="login()">Login</button>
+
+<p>Don't have an account? <span onclick="signup()">Sign Up</span></p>
+
+<button class="guest" onclick="enterSite()">Continue as Guest</button>
+
+</div>
+
+<!-- HOME -->
+<div id="homePage" style="display:none;">
+
+<nav>
+
+<h2 class="logo">Velvet Cafe</h2>
+
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="menu.html">Menu</a></li>
+<li><a href="cart.html">Cart 🛒</a></li>
+</ul>
+
+</nav>
+
+<section class="hero">
+
+<div class="hero-text">
+
+<h1>Fresh. Delicious. Delivered.</h1>
+
+<p>Premium cafe experience at your doorstep</p>
+
+<a href="menu.html" class="btn">View Menu</a>
+
+</div>
+
+</section>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
